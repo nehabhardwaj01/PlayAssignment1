@@ -1,0 +1,82 @@
+@(user : SignUpData)
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Profile</title>
+    <script type='text/javascript'
+            src='@routes.Assets.versioned("bootstrap-3.3.7-dist/js/bootstrap.js")'></script>
+    <script type="text/javascript" src='@routes.Assets.versioned("bootstrap-3.3.7-dist/js/jQuery-3.1.1.min.js")'></script>
+    <link rel="stylesheet"
+          href='@routes.Assets.versioned("bootstrap-3.3.7-dist/css/bootstrap.min.css")'>
+    <link rel="stylesheet"
+          href='@routes.Assets.versioned("stylesheets/profile.css")'>
+<script>
+    $(document).ready(function(){
+    $("p").hide();
+
+    $("#loginInfo").click(function(){
+        $("#info").show();
+    });
+    $("#aboutMe").click(function(){
+        $("#aboutMeSection").show();
+    });
+    $("#contact").click(function(){
+        $("#contactSection").show();
+    });
+
+    $("p").click(function(){
+    $(this).hide();
+    });
+});
+</script>
+</head>
+<body>
+@*
+<!--@user.name.middleName match{-->
+<!--case x:Some => <h1>Hello @user.name.firstName @user.name.middleName @user.name.lastName !</h1>-->
+<!--case _ => <h1>Hello @user.name.firstName @user.name.lastName !</h1>-->
+<!--}-->*@
+
+<h1>Hello @user.name.firstName @user.name.middleName @user.name.lastName !</h1>
+<div>
+<nav class="navbar navbar-inverse">
+    <div class="container-fluid row">
+        <ul class="nav navbar-nav col-md-9">
+            <li><a id="loginInfo" href="#">Login Information</a></li>
+            <li><a id="aboutMe" href="#">About Me</a></li>
+            <li><a href="#">My Walls</a></li>
+            <li><a href="#">Gallery</a></li>
+            <li><a id="contact" href="#">Contact</a></li>
+            </ul>
+        <ul  class="col-md-offset-10">
+            <li><a href="#">
+                <form class="form form-inline" action="/welcome">
+                <input type="submit" class="btn btn-info " value="Sign Out">
+                </form>
+            </a></li>
+
+        </ul>
+    </div>
+</nav>
+</div>
+
+<p id="info">
+    Username : @user.username<br><br>
+    Password : @user.password
+</p>
+
+<p id="contactSection">
+    Contact : @user.mobileNo<br><br>
+    Email : @user.email
+</p>
+
+<p id="aboutMeSection">
+    Gender : @user.gender<br><br>
+    Age : @user.age<br><br>
+    Hobbies : @user.hobbies
+</p>
+
+</body>
+</html>

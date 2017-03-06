@@ -1,0 +1,42 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sign In</title>
+    <script type='text/javascript'
+            src='@routes.Assets.versioned("bootstrap-3.3.7-dist/js/bootstrap.js")'></script>
+    <script type="text/javascript" src='@routes.Assets.versioned("bootstrap-3.3.7-dist/js/jQuery-3.1.1.min.js")'></script>
+    <link rel="stylesheet"
+          href='@routes.Assets.versioned("bootstrap-3.3.7-dist/css/bootstrap.min.css")'>
+    <link rel="stylesheet" href="stylesheets/welcome.css">
+
+</head>
+<body>
+@*
+<!--@helper.form(action = routes.HomeController.index) {-->
+<!--@helper.inputText(userForm("name"))-->
+<!--@helper.inputText(userForm("age"))-->
+<!--}-->
+*@
+
+<table>
+<form class="form form-inline" action="/profileSignIn">
+    <tr>
+    <td><label name="username">Username</label></td>
+        <td><input class="form-control" type="text" name="username" placeholder="Username"></td>
+    </tr>
+    <tr>
+    <td><label value="password">Password</label></td>
+        <td><input class="form-control" type="password" name="password" placeholder="Password"></td>
+    </tr>
+    <tr>
+        <td colspan="3">
+            <input type="submit" value="Submit" class="btn-success"></td>
+        </td>
+    </tr>
+</form>
+</table>
+
+</body>
+</html>

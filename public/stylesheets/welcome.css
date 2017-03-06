@@ -1,0 +1,11 @@
+h1{
+    background-color: aquamarine;
+    text-align: -webkit-center;
+    font-size : 72px;
+}
+
+table{
+    align : center;
+    width : 500px;
+    margin-left : 30%
+}
