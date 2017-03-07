@@ -21,5 +21,5 @@ GET     /signUp                     controllers.MyController.signUpPage
 POST    /profileSignIn              controllers.SignInController.userPost
 POST    /profileSignUp              controllers.SignUpController.saveContact
 
-GET     /welcome                    controllers.HomeController.index
+GET     /welcomeAgain                    controllers.HomeController.welcomeAgain
 

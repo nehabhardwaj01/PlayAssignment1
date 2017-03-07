@@ -33,11 +33,6 @@
 </script>
 </head>
 <body>
-@*
-<!--@user.name.middleName match{-->
-<!--case x:Some => <h1>Hello @user.name.firstName @user.name.middleName @user.name.lastName !</h1>-->
-<!--case _ => <h1>Hello @user.name.firstName @user.name.lastName !</h1>-->
-<!--}-->*@
 
 <h1>Hello @user.name.firstName @user.name.middleName @user.name.lastName !</h1>
 <div>
@@ -52,7 +47,7 @@
             </ul>
         <ul  class="col-md-offset-10">
             <li><a href="#">
-                <form class="form form-inline" action="/">
+                <form class="form form-inline" action="/welcomeAgain">
                 <input type="submit" class="btn btn-info " value="Sign Out">
                 </form>
             </a></li>

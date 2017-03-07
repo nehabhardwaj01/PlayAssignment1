@@ -39,6 +39,7 @@ class SignUpController @Inject() extends Controller{
       userData => {
         val (exist,message) = validate(userData)
         if(exist==true){
+          Operations.addUser(userData)
           Ok(views.html.profile(userData))
             //.withSession("connectedUser" -> userData.username))
         }
@@ -62,3 +63,4 @@ class SignUpController @Inject() extends Controller{
     }
     }
 }
+//cache.set("item.key", frontPageNews);

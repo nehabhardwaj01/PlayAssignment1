@@ -25,10 +25,16 @@ class SignInController extends Controller{
     userForm.bindFromRequest.fold(
       formWithErrors => {
         println(formWithErrors)
-        BadRequest(views.html.signIn(signInData)(""))
+        BadRequest(views.html.signIn(signInData)(" "+formWithErrors))
       },
       userData => {
+        println(userData)
+        println(Operations.getUsers)
         val (exist,message,obj) = validate(userData)
+        println(exist)
+        println(message)
+        println(obj)
+
         if(exist){
           Ok(views.html.profile(obj))
         }
@@ -40,18 +46,18 @@ class SignInController extends Controller{
   }
 
   def validate(user : SignInData) = {
-    val usernameList= Operations.listOfUser.map(_.username)
+    val usernameList= Operations.getUsers.map(_.username)
     if(usernameList.contains(user.username)){
-      val pswd = Operations.listOfUser.filter(_.username==user.username).map(_.password)
-      if(pswd == user.password){
-        (true,"Sign In Successful",Operations.getUser(user.username))
+      val u = Operations.getUser(user.username)
+      if(u.password == user.password){
+        (true,"Sign In Successful",u)
       }
       else{
-        (false,"Incorrect Username or Password",signUpData)
+        (false,"Incorrect Password",signUpData)
       }
     }
     else{
-      (false,"Incorrect Username or Password",signUpData)
+      (false,"Username doesnt exists",signUpData)
     }
 
   }
