@@ -6,10 +6,10 @@ import play.api.libs.json.JsValue
 import play.api.mvc._
 import play.api.data.Forms._
 import models.{SignUpData, SignInData}
+import services.Operations
 
 @Singleton
 class SignInController extends Controller{
-  val signUpController = new SignUpController
 
   val userForm = Form(                                //Form is to transform form data into a bound instance of a case class
     mapping(                                          //mapping takes 3 parameters
@@ -25,25 +25,16 @@ class SignInController extends Controller{
         BadRequest(views.html.signIn())
       },
       userData => {
-        if(!validate(userData)) {
-          Ok("Client Error")
-        }
-        else {
-          Ok(views.html.profile(signUpController.profileController.getUser(userData.username)))
-        }
+        val user = Operations.getUser(userData.username)
+        if((user.username == userData.username) && (user.password == userData.password))
+          Ok(views.html.profile(user)).withSession("connected" -> userData.username)
+        else
+          BadRequest(views.html.signIn())
       }
     )
   }
 
-  def validate(userData : SignInData) : Boolean= {
-    if (signUpController.profileController.list.contains(userData.username)) {
-      (signUpController.profileController.getUser(userData.username).password).equals(userData.password)
-    }
-    else {
-      false
-    }
-  }
-//
+
 //  Ok("Welcome!").withSession(
 //    "connected" -> "user@gmail.com")
 //

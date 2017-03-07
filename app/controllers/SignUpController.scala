@@ -9,10 +9,9 @@ import play.api.data.Forms._
 import play.api.libs.json._
 import models.SignUpData
 import models.Name
-
+import services.Operations
 @Singleton
 class SignUpController @Inject() extends Controller{
-  val profileController = new ProfileController
   val userForm : Form[SignUpData]= Form(                            //Form is to transform form data into a bound instance of a case class
     mapping(                                      //mapping takes 3 parameters in a curried manner
       "name" -> mapping(
@@ -21,7 +20,7 @@ class SignUpController @Inject() extends Controller{
         "lastName" -> nonEmptyText )(Name.apply)(Name.unapply),
       "gender" -> nonEmptyText,
       "email" -> nonEmptyText,
-      "mobileNo" -> number(min = 0,max=Int.MaxValue),
+      "mobileNo" -> longNumber(min = Long.MinValue,max=Long.MaxValue),
       "username" -> nonEmptyText,
       "password" -> nonEmptyText,
       "rePassword" -> nonEmptyText,
@@ -37,10 +36,13 @@ class SignUpController @Inject() extends Controller{
         BadRequest(views.html.signUp())
       },
       userData => {
+        if(userData.password == userData.rePassword){
+          Operations.addUser(userData)
+          Ok(views.html.profile(userData)).withSession("connectedUser" -> userData.username)
+        }
         println(userData)
-        profileController.saveData(userData)
-        Ok(views.html.profile(userData))
-          //.withSession(request.session + "connectedUser" -> userData.username))
+        Operations.addUser(userData)
+        Ok(views.html.profile(userData)).withSession("connectedUser" -> userData.username)
       }
     )
   }

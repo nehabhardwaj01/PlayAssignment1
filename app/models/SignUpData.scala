@@ -7,7 +7,7 @@ case class SignUpData(
                        name : Name,
                        gender : String,
                        email : String,
-                       mobileNo : Int,
+                       mobileNo : Long,
                        username: String,
                        password: String,
                        rePassword : String,
