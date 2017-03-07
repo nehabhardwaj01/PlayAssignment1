@@ -10,6 +10,7 @@ import play.api.libs.json._
 import models.SignUpData
 import models.Name
 import services.Operations
+
 @Singleton
 class SignUpController @Inject() extends Controller{
   val userForm : Form[SignUpData]= Form(                            //Form is to transform form data into a bound instance of a case class
@@ -33,17 +34,31 @@ class SignUpController @Inject() extends Controller{
     userForm.bindFromRequest.fold(
       formWithErrors => {
         println(formWithErrors)
-        BadRequest(views.html.signUp())
+        Redirect("/signUp")
       },
       userData => {
-        if(userData.password == userData.rePassword){
-          Operations.addUser(userData)
-          Ok(views.html.profile(userData)).withSession("connectedUser" -> userData.username)
+        val (exist,message) = validate(userData)
+        if(exist==true){
+          Ok(views.html.profile(userData))
+            //.withSession("connectedUser" -> userData.username))
         }
-        println(userData)
-        Operations.addUser(userData)
-        Ok(views.html.profile(userData)).withSession("connectedUser" -> userData.username)
+        else {
+          Ok(views.html.signUp(userData)(message))
+            //.withSession("error" -> message)
+        }
       }
     )
   }
+
+  def validate(user : SignUpData) : (Boolean,String)={
+    if(user.password == user.rePassword){
+      val usernameList= Operations.listOfUser.map(_.username)
+      if(usernameList.contains(user.username)){
+        (false,"Username already exixts !") }
+      else (true, "Sign Up successful!")
+    }
+    else{
+      (false,"Password and password doesnt match !")
+    }
+    }
 }

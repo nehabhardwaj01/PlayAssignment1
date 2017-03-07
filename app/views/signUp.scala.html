@@ -1,3 +1,5 @@
+@(user : SignUpData)(message : String)
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,49 +17,42 @@
 <body>
 <div style="    margin-left: 20%; width: 60%;">
     <h2>Sign Up Here !!!</h2>
+    <h4>@message</h4>
 <form class="form form-horizontal" action="/profileSignUp" method="post">
 
     <label name="firstname">First Name</label>
-    <input class="form-control" type="text" name="name.firstName" placeholder="firstName" ><br>
+    <input class="form-control" type="text" name="name.firstName" placeholder="firstName" required value="@user.name.firstName"><br>
 
     <label name="middlename">Middle Name</label>
-    <input class="form-control" type="text" name="name.middleName" placeholder="middleName" ><br>
-
+    <input class="form-control" type="text" name="name.middleName" placeholder="middleName" value="@user.name.middleName"><br>
     <label name="lastname">Last Name</label>
-    <input class="form-control" type="text" name="name.lastName" placeholder="lastName"><br>
+    <input class="form-control" type="text" name="name.lastName" placeholder="lastName" required value="@user.name.lastName"><br>
 
     <label name="gender">Gender</label><br>
-    <input type="radio" name="gender" value="male">Male
+    <input type="radio" name="gender" value="male" checked >Male
     <input type="radio" name="gender" value="Female">Female<br>
 
     <label name="email">Email</label>
-    <input class="form-control" type="email" name="email" placeholder="email"><br>
+    <input class="form-control" type="email" name="email" placeholder="email" required value="@user.email"><br>
 
     <label name="mobileno">Mobile No.</label>
-    <input class="form-control" type="number" name="mobileNo" placeholder="mobileno"><br>
+    <input class="form-control" type="number" name="mobileNo" placeholder="mobileno" required value="@user.mobileNo"><br>
 
     <label class="form-label" name="username">UserName</label>
-    <input class="form-control" type="text" name="username" placeholder="username" ><br>
+    <input class="form-control" type="text" name="username" placeholder="username" required value="@user.username"><br>
 
     <label class="form-label" name="password">Password</label>
-    <input class="form-control" type="password" name="password" placeholder="password" ><br>
+    <input class="form-control" type="password" name="password" placeholder="password" required value="@user.password"><br>
 
     <label class="form-label" name="repassword">Re-enter Password</label>
-    <input class="form-control" type="password" name="rePassword" placeholder="rePassword" ><br>
+    <input class="form-control" type="password" name="rePassword" placeholder="rePassword" required value="@user.rePassword"><br>
 
     <label class="form-label" name="age">Age</label>
-    <input class="form-control" type="number" name="age" placeholder="age" ><br>
+    <input class="form-control" type="number" name="age" placeholder="age" required value="@user.age"><br>
 
     <label class="form-label" name="hobbies">Hobbies</label>
-    <!--<select>-->
-        <!--<option name="hobbies" value="Playing Games">Plalying Games</option>-->
-        <!--<option name="hobbies">Chatting</option>-->
-        <!--<option name="hobbies">Travelling</option>-->
-        <!--<option name="hobbies">Cooking</option>-->
-        <!--<option name="hobbies">Others</option>-->
 
-    <!--</select>-->
-    <textarea class="form-control" type="text" name="hobbies" placeholder="hobbies" ></textarea><br>
+    <textarea class="form-control" type="text" name="hobbies" placeholder="hobbies" value="@user.hobbies"></textarea><br>
 
     <input class="form-control btn btn-success" type="submit" value=" Submit ">
 </form>

@@ -18,8 +18,8 @@ GET     /signUp                     controllers.MyController.signUpPage
 
 #GET     /profile/:username          controllers.MyController.getProfile(username)
 
-GET     /profileSignIn              controllers.SignInController.userPost
+POST    /profileSignIn              controllers.SignInController.userPost
 POST    /profileSignUp              controllers.SignUpController.saveContact
 
-GET     /welcome                    controllers.HomeController.welcomeAgain
+GET     /welcome                    controllers.HomeController.index
 
