@@ -78,9 +78,9 @@
 
 <p id="isAdminSection">
     Is Admin : @user.isAdmin
-    @if(@user.isAdmin == true){
+    @if(user.isAdmin == true){
         <form action="/manage">
-        <button type="button" name="manage">Manage Users</button>
+        <input type="submit" name="manage" value="Manage Users" class="btn btn-warning">
         </form>
     }
 </p>

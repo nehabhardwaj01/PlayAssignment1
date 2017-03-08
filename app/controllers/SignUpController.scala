@@ -39,9 +39,7 @@ class SignUpController @Inject()(cache:CacheApi,configuration: play.api.Configur
       userData => {
         val (exist,message) = validate(userData)
         if(exist==true){
-          val hashedPassword = MD5.hash(userData.password)
-          val newUser = userData.copy(password = hashedPassword)
-          cache.set(userData.username,newUser)
+          val newUser = updateCache(userData)
           Ok(views.html.profile(newUser))
         }
         else {
@@ -67,4 +65,20 @@ class SignUpController @Inject()(cache:CacheApi,configuration: play.api.Configur
       (false,"Password and password doesnt match !")
     }
     }
+
+  def updateListOfKeys(username : String) : List[String]= {
+    cache.get[List[String]]("listOfKeys") match {
+      case Some(x) => x :+ username
+      case None => List(username)
+    }
+  }
+
+  def updateCache(userData : SignUpData ) : SignUpData = {
+    val hashedPassword = MD5.hash(userData.password)
+    val newUser = userData.copy(password = hashedPassword)
+    cache.set(userData.username,newUser)
+    val list = updateListOfKeys(userData.username)
+    cache.set("listOfKeys",list)
+    newUser
+  }
 }
