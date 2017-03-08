@@ -25,6 +25,9 @@
     $("#contact").click(function(){
         $("#contactSection").show();
     });
+    $("#isAdmin").click(function(){
+        $("#isAdminSection").show();
+    });
 
     $("p").click(function(){
     $(this).hide();
@@ -41,7 +44,7 @@
         <ul class="nav navbar-nav col-md-9">
             <li><a id="loginInfo" href="#">Login Information</a></li>
             <li><a id="aboutMe" href="#">About Me</a></li>
-            <li><a href="#">My Walls</a></li>
+            <li><a id="isAdmin" href="#">Is Admin</a></li>
             <li><a href="#">Gallery</a></li>
             <li><a id="contact" href="#">Contact</a></li>
             </ul>
@@ -71,6 +74,15 @@
     Gender : @user.gender<br><br>
     Age : @user.age<br><br>
     Hobbies : @user.hobbies
+</p>
+
+<p id="isAdminSection">
+    Is Admin : @user.isAdmin
+    @if(@user.isAdmin == true){
+        <form action="/manage">
+        <button type="button" name="manage">Manage Users</button>
+        </form>
+    }
 </p>
 
 </body>

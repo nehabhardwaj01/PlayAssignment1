@@ -1,17 +1,17 @@
 package controllers
 
-import com.google.inject.Singleton
+import com.google.inject.{Inject, Singleton}
+import play.api.cache.CacheApi
 import play.api.data._
-import play.api.libs.json.JsValue
 import play.api.mvc._
 import play.api.data.Forms._
 import models.{Name, SignUpData, SignInData}
-import services.Operations
+import services.MD5
 
 @Singleton
-class SignInController extends Controller{
+class SignInController @Inject()(cache : CacheApi) extends Controller{
   val name = new Name(" ",Some(" ")," ")
-  val signUpData = SignUpData(name,"","",0,"","","",0,"")
+  val signUpData = SignUpData(name,"","",0,"","","",0,"",false)
   val signInData = SignInData("","")
 
   val userForm = Form(                                //Form is to transform form data into a bound instance of a case class
@@ -29,7 +29,6 @@ class SignInController extends Controller{
       },
       userData => {
         println(userData)
-        println(Operations.getUsers)
         val (exist,message,obj) = validate(userData)
         println(exist)
         println(message)
@@ -45,20 +44,24 @@ class SignInController extends Controller{
     )
   }
 
-  def validate(user : SignInData) = {
-    val usernameList= Operations.getUsers.map(_.username)
-    if(usernameList.contains(user.username)){
-      val u = Operations.getUser(user.username)
-      if(u.password == user.password){
-        (true,"Sign In Successful",u)
-      }
-      else{
-        (false,"Incorrect Password",signUpData)
-      }
-    }
-    else{
-      (false,"Username doesnt exists",signUpData)
-    }
-
+  def getValue(key : String) : Option[SignUpData]= {
+    cache.get[SignUpData](key)
   }
+
+  def validate(user : SignInData) = {
+    val userName = getValue(user.username)
+
+    userName match {
+      case Some(x) => {
+        if (x.password == MD5.hash(user.password)) {
+          (true, "Sign In Successful", x)
+        }
+        else {
+          (false, "Incorrect Password", signUpData)
+        }
+      }
+      case None => (false, "Username doesnt exists", signUpData)
+    }
+  }
+
 }
