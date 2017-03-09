@@ -1,4 +1,4 @@
-@(user : SignUpData)(message : String)(isAdmin : Boolean)
+@(user : SignUpData)(message : String)
 
 <!DOCTYPE html>
 <html lang="en">
@@ -54,7 +54,8 @@
 
     <textarea class="form-control" type="text" name="hobbies" placeholder="hobbies" value="@user.hobbies"></textarea><br>
 
-    <input type="hidden" value="@isAdmin" name="isAdmin"><br>
+    <input type="hidden" value="@user.isAdmin" name="isAdmin"><br>
+    <input type="hidden" value="@user.isEnabled" name="isEnabled"><br>
 
     <input class="form-control btn btn-success" type="submit" value=" Submit ">
 </form>

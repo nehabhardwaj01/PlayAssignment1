@@ -21,7 +21,9 @@ GET     /signUp                     controllers.MyController.signUpPage
 POST    /profileSignIn              controllers.SignInController.userPost
 POST    /profileSignUp              controllers.SignUpController.saveContact
 
-GET     /welcomeAgain               controllers.HomeController.welcomeAgain
-
 GET     /manage                     controllers.ManageUsers.manage
+GET     /enable/:username           controllers.ManageUsers.enable(username : String)
+GET     /disable/:username                    controllers.ManageUsers.disable(username : String)
+
+
 

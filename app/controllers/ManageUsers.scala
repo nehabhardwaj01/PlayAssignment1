@@ -8,26 +8,26 @@ import play.api.mvc._
 import javax.inject._
 import play.api._
 import play.api.mvc._
+import services.AppCacheProvider
 
 @Singleton
-class ManageUsers @Inject()(cache:CacheApi) extends Controller {
+class ManageUsers @Inject()(cache:AppCacheProvider) extends Controller {
 
   def manage = Action{
-    Ok(views.html.manageUsers(getListOfUsers))
+    Ok(views.html.manageUsers(cache.getListOfUsers))
   }
 
-  def getListOfUsers ={
-    val listOfKeys = cache.get[List[String]]("listOfKeys") match{
-      case Some(x) => x
-      case None => Nil
-    }
-
-    val listOfUsers : List[SignUpData] = for{
-                          key <- listOfKeys
-                          user = cache.get[SignUpData](key) match{
-                            case Some(x) => x
-                          }
-                        }yield user
-    listOfUsers
+  def enable(username : String) = Action{
+    val newUser = cache.getData(username).copy(isEnabled = true)
+    cache.setData(username,newUser)
+    Ok(views.html.manageUsers(cache.getListOfUsers))
   }
+
+  def disable(username : String) = Action{
+    val newUser = cache.getData(username).copy(isEnabled = false)
+    cache.setData(username,newUser)
+    Ok(views.html.manageUsers(cache.getListOfUsers))
+  }
+
+
 }

@@ -21,8 +21,4 @@ class HomeController @Inject() extends Controller {
     Ok(views.html.welcome())
   }
 
-  def welcomeAgain = Action {
-    Ok(views.html.welcomeAgain())
-  }
-
 }

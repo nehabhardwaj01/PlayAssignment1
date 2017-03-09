@@ -25,16 +25,23 @@
         <td>@user.name.firstName</td>
         <td>@user.name.lastName</td>
         <td>@user.username</td>
-        <td>
-            <form>
-                <input type="button" name="enable" value="Enable" class="btn btn-info">
+        <td>@if(!user.isEnabled){
+            <form action="/enable/@user.username">
+                <input type="submit" name="enable" value="Enable" class="btn btn-info">
             </form>
-            <form>
-                <input type="button" name="disable" value="Disable" class="btn btn-danger">
+            } else {
+            <form action="/disable/@user.username">
+                <input type="submit" name="disable" value="Disable" class="btn btn-danger">
             </form>
+            }
         </td>
     </tr>
     }
 </table>
+
+<form class="form form-inline" action="/">
+    <input type="submit" class="btn btn-info " value="Sign Out">
+</form>
+
 </body>
 </html>

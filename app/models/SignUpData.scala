@@ -1,8 +1,5 @@
 package models
 
-import com.google.inject.Inject
-import play.api.Configuration
-
 case class Name(firstName: String,middleName: Option[String],lastName: String)
 
 case class SignUpData( name : Name,
@@ -14,4 +11,5 @@ case class SignUpData( name : Name,
                        rePassword : String,
                        age : Int,
                        hobbies : String,
-                       isAdmin : Boolean )
+                       isAdmin : Boolean = false,
+                       isEnabled : Boolean = true)

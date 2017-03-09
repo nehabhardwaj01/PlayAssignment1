@@ -1,17 +1,15 @@
 package controllers
-import play.api.{cache, Logger}
 import com.google.inject.{Inject, Singleton}
 import play.api.data._
 import play.api.data.Forms._
 import models.SignUpData
 import models.Name
-import play.api.cache._
 import play.api.mvc._
-import services.MD5
+import services.{AppCacheProvider, MD5}
 
 
 @Singleton
-class SignUpController @Inject()(cache:CacheApi,configuration: play.api.Configuration) extends Controller{
+class SignUpController @Inject()(cache:AppCacheProvider) extends Controller{
   val userForm : Form[SignUpData]= Form(                            //Form is to transform form data into a bound instance of a case class
     mapping(                                      //mapping takes 3 parameters in a curried manner
       "name" -> mapping(
@@ -26,7 +24,8 @@ class SignUpController @Inject()(cache:CacheApi,configuration: play.api.Configur
       "rePassword" -> nonEmptyText,
       "age" -> number(min = 18,max = 75),
       "hobbies" -> nonEmptyText,
-      "isAdmin" -> boolean
+      "isAdmin" -> boolean,
+      "isEnabled" -> boolean
     )(SignUpData.apply)(SignUpData.unapply)
   )
 
@@ -43,42 +42,33 @@ class SignUpController @Inject()(cache:CacheApi,configuration: play.api.Configur
           Ok(views.html.profile(newUser))
         }
         else {
-          Ok(views.html.signUp(userData)(message)(userData.isAdmin))
+          Ok(views.html.signUp(userData)(message))
         }
       }
     )
   }
 
-  def getValue(key : String) : Option[SignUpData]= {
-    cache.get[SignUpData](key)
-  }
-
   def validate(user : SignUpData) : (Boolean,String)={
-    if(user.password == user.rePassword) {
-      val userName = getValue(user.username)
-      userName match {
-        case Some(x) => (false, "Username already exixts !")
-        case None => (true, "Sign Up successful!")
+    if(user.password.equals(user.rePassword)) {
+      val userName = cache.getData(user.username)
+      if(cache.getListOfKeys.contains(userName)) {
+        (false, "Username already exixts !")
+      }
+      else{
+        (true, "Sign Up successful!")
       }
     }
     else{
-      (false,"Password and password doesnt match !")
-    }
-    }
-
-  def updateListOfKeys(username : String) : List[String]= {
-    cache.get[List[String]]("listOfKeys") match {
-      case Some(x) => x :+ username
-      case None => List(username)
+      (false,"Password and Re-Password doesnt match !")
     }
   }
 
   def updateCache(userData : SignUpData ) : SignUpData = {
     val hashedPassword = MD5.hash(userData.password)
-    val newUser = userData.copy(password = hashedPassword)
-    cache.set(userData.username,newUser)
-    val list = updateListOfKeys(userData.username)
-    cache.set("listOfKeys",list)
+    val newUser = userData.copy(password = hashedPassword,rePassword = hashedPassword)
+    cache.setData(userData.username,newUser)
+    cache.updateListOfKeys(userData.username)
     newUser
+
   }
 }

@@ -10,6 +10,7 @@ libraryDependencies ++= Seq(
   jdbc,
   cache,
   ws,
+  specs2,
   "org.scalatestplus.play" %% "scalatestplus-play" % "1.5.1" % Test
 )
 
@@ -20,5 +21,7 @@ resolvers ++= Seq(
 libraryDependencies ++= Seq(
   "org.webjars"               %% "webjars-play"       % "2.3.0",
   "org.webjars"               % "bootstrap"           % "3.0.0" exclude("org.webjars", "jquery"),
-  "org.webjars"               % "jquery"              % "1.8.3"
+  "org.webjars"               % "jquery"              % "1.8.3",
+  "org.mockito"               % "mockito-all"         % "1.9.5"
+
 )
